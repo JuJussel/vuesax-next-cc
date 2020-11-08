@@ -17,7 +17,7 @@ export default class VsTableTr extends VsComponent {
     } else {
       this.$nextTick(() => {
         const content: any = this.$refs.content
-        content.style.height = `${content.scrollHeight}px`
+        //content.style.height = `${content.scrollHeight}px`
       })
     }
   }

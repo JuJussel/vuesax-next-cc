@@ -16,6 +16,8 @@ export default class VsCheckbox extends VsComponent {
 
   @Prop({ type: Boolean, default: false }) indeterminate!: boolean
 
+  @Prop({ type: Boolean, default: false }) disabled!: boolean
+
   @Prop({ type: Boolean, default: false }) lineThrough!: boolean
 
   @Prop({ type: Boolean, default: false }) checked: boolean
@@ -167,7 +169,7 @@ export default class VsCheckbox extends VsComponent {
       },
       class: [
         { 'vs-checkbox--checked': this.isChecked },
-        { 'vs-checkbox--disabled': this.$attrs.hasOwnProperty('disabled') },
+        { 'vs-checkbox--disabled': this.$props.disabled },
         { 'vs-checkbox--loading': this.loading },
         { 'vs-checkbox--label-before': this.labelBefore },
 

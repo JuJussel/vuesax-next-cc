@@ -49,7 +49,6 @@ export default class VsTableTr extends VsComponent {
       this.instanceExpand.$data.hidden = !this.instanceExpand.$data.hidden
       this.instanceExpand = null
       this.$emit('expandChange', false)
-      // this.expand = false
     } else {
       const colspan = this.$parent.$el.querySelectorAll('thead th').length
       const trExpand = Vue.extend(expand)
@@ -60,11 +59,26 @@ export default class VsTableTr extends VsComponent {
       this.instanceExpand.$data.hidden = false
       this.insertAfter(this.instanceExpand.vm.$el)
       this.$emit('expandChange', true)
-      // this.expand = true
     }
   }
 
   public render(h: any): VNode {
+    const commands = h('td', {
+      on: {
+        click: (evt: any) => {
+          evt.stopPropagation();
+        }
+      },
+      staticClass: 'cc-vs-trow-commands vs-table__td'
+    }, [
+      this.$slots.commands
+    ])
+
+    let includedSlot = this.$slots.default
+    if (this.$slots.commands) {
+      includedSlot = [this.$slots.default, commands]
+    }
+
     return h('tr', {
       staticClass: 'vs-table__tr',
       on: {
@@ -73,7 +87,7 @@ export default class VsTableTr extends VsComponent {
             if (
               (this.openExpandOnlyTd ? evt.target.nodeName == 'TD' : true) &&
               !evt.target.className.includes('isEdit')) {
-              this.handleClickHasExpand(h)
+              this.handleClickHasExpand()
             }
           }
 
@@ -90,6 +104,6 @@ export default class VsTableTr extends VsComponent {
         isExpand: !!this.instanceExpand,
         expand: this.$slots.expand
       }
-    }, this.$slots.default)
+    }, includedSlot)
   }
 }

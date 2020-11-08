@@ -113,20 +113,20 @@ export default class VsSelect extends VsComponent {
 
   getValue() {
     const options = this.childOptions
-
     const filterOptions = options.filter((option: any): boolean => {
-
       if (typeof this.value == 'number') {
         return this.value == option.value
       } else {
-          if(typeof this.value === 'object') {
-            return this.value.filter((item: string ) => Object.entries(item)[0][1] === Object.entries(option.value)[0][1]).length > 0
-          } else {
-            return this.value.indexOf(option.value) !== -1
-          }
+        if(typeof this.value === 'object' && Array.isArray(this.value)) {
+          return this.value.filter((item: string ) => Object.entries(item)[0][1] === Object.entries(option.value)[0][1]).length > 0
+        } else if (typeof this.value === 'object') {
+          //return this.value == option.value
+          return Object.entries(this.value)[0][1] === Object.entries(option.value)[0][1]
+        } else {
+          return this.value.indexOf(option.value) !== -1
+        }
       }
     })
-
     const label: any[] = []
     filterOptions.forEach((item: any) => {
       label.push({
@@ -138,6 +138,7 @@ export default class VsSelect extends VsComponent {
     label.sort((a, b) => {
       return this.value.indexOf(a.value) - this.value.indexOf(b.value);
     })
+    console.log(label);
 
     this.valueLabel = label
   }
@@ -149,6 +150,8 @@ export default class VsSelect extends VsComponent {
       valueLabel.forEach((item: any) => {
         labels.push(item.label)
       })
+    } else if (typeof valueLabel == 'object') {
+      labels = [valueLabel]
     } else {
       labels = valueLabel
     }

@@ -175,8 +175,11 @@ export default class VsTooltip extends VsComponent {
           }
         },
         mouseleave: () => {
-          this.isHoverTooltip = false
-          this.removeTooltip()
+          if (!this.interactivity) {
+            this.isHoverTooltip = false
+            this.removeTooltip()
+          }
+
         }
       }
     }, [
@@ -195,13 +198,7 @@ export default class VsTooltip extends VsComponent {
         },
         mouseleave: () => {
           if (!this.notHover) {
-            if (this.interactivity) {
-              setTimeout(() => {
-                if (!this.isHoverTooltip) {
-                  this.removeTooltip()
-                }
-              }, 250)
-            } else {
+            if (!this.interactivity) {
               this.removeTooltip()
             }
           }

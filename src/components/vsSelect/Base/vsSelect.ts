@@ -32,6 +32,8 @@ export default class VsSelect extends VsComponent {
 
   @Prop({ type: Boolean, default: false }) block!: boolean
 
+  @Prop({ type: String, default: null }) chipMaxWidth!: String
+
   renderSelect: boolean = false
 
   activeOptions: boolean = false
@@ -118,7 +120,11 @@ export default class VsSelect extends VsComponent {
         return this.value == option.value
       } else {
         if(typeof this.value === 'object' && Array.isArray(this.value)) {
-          return this.value.filter((item: string ) => Object.entries(item)[0][1] === Object.entries(option.value)[0][1]).length > 0
+          if(typeof option.value === 'string') {
+            return this.value.includes(option.value)
+          } else {
+            return this.value.filter((item: string ) => Object.entries(item)[0][1] === Object.entries(option.value)[0][1]).length > 0
+          }
         } else if (typeof this.value === 'object') {
           //return this.value == option.value
           return Object.entries(this.value)[0][1] === Object.entries(option.value)[0][1]
@@ -138,8 +144,6 @@ export default class VsSelect extends VsComponent {
     label.sort((a, b) => {
       return this.value.indexOf(a.value) - this.value.indexOf(b.value);
     })
-    console.log(label);
-
     this.valueLabel = label
   }
 
@@ -187,7 +191,13 @@ export default class VsSelect extends VsComponent {
           }
         ]
       }, [
-        item.label,
+        this.$createElement('span', {
+          staticClass: 'vs-select__chips__chip__text',
+          style: {
+            ['max-width']: this.chipMaxWidth ? this.chipMaxWidth : 'inherit'
+          }
+          }, [item.label]
+        ),
         !isCollapse && this.$createElement('span', {
           staticClass: 'vs-select__chips__chip__close',
           on: {

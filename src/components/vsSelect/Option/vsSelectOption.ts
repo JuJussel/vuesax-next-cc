@@ -42,7 +42,12 @@ export default class VsSelectOption extends VsComponent {
       return parentValue == this.value
     } else {
         if(typeof parentValue === 'object' && Array.isArray(parentValue)) {
-          return parentValue.filter((item: string ) => Object.entries(item)[0][1] === Object.entries(this.value)[0][1]).length > 0
+          if(typeof this.value === 'string') {
+            return parentValue.includes(this.value)
+          } else {
+            return parentValue.filter((item: string ) => Object.entries(item)[0][1] === Object.entries(this.value)[0][1]).length > 0
+          }
+
         } else if (typeof parentValue === 'object') {
           return this.value == parentValue
         } else {

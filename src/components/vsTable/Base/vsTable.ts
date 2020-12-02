@@ -35,7 +35,6 @@ export default class VsTable extends VsComponent {
     } else {
       newVal.push(val)
     }
-
     this.$emit('input', newVal)
   }
 

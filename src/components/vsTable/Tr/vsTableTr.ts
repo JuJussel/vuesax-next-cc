@@ -25,7 +25,6 @@ export default class VsTableTr extends VsComponent {
       this.insertAfter(this.instanceExpand.vm.$el)
     }
   }
-
   insertAfter(element: any) {
     if (this.$el.nextSibling) {
       this.$el.parentNode.insertBefore(element, this.$el.nextSibling)
@@ -43,6 +42,16 @@ export default class VsTableTr extends VsComponent {
       // this.expand = false
     }
   }
+  @Watch('expanded')
+  handleChangeExpand() {
+    if (!this.expanded && this.instanceExpand) {
+      this.instanceExpand.$data.hidden = true
+      this.instanceExpand = null
+      // this.expand = false
+    }
+  }
+
+
 
   handleClickHasExpand() {
     if (this.instanceExpand) {

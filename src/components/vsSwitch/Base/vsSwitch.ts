@@ -19,6 +19,8 @@ export default class VsSwitch extends VsComponent {
 
   @Prop({ type: Boolean, default: false }) icon!: boolean
 
+  @Prop({ type: String, default: '' }) label!: string
+
   get isChecked() {
     let isChecked = false
 
@@ -43,13 +45,22 @@ export default class VsSwitch extends VsComponent {
         } else {
           return true
         }
+      } else if (typeof this.value == 'string') {
+        if (this.value === this.val) {
+          isChecked = true
+        }
       }
-
     } else {
       isChecked = false
     }
     return isChecked
   }
+
+  _uid: any
+  get getId() {
+    return `vs-input--${this.$attrs.id || this._uid}`
+  }
+
 
   public render(h: any): VNode {
     const circle = h('div', {
@@ -67,6 +78,21 @@ export default class VsSwitch extends VsComponent {
       ref: 'off',
       class: ['vs-switch__text', 'off'],
     }, [ this.$slots.off || this.$slots.default ])
+
+    const label = h('label', {
+      attrs: {
+        for: this.getId
+      },
+      style: {
+        ['height']: '30px'
+      },
+      class: [
+        'vs-input__label',
+        { 'vs-input__label--label': this.label }
+      ],
+    }, [
+      this.label
+    ])
 
     const background = h('div', {
       class: ['vs-switch__background'],
@@ -122,7 +148,7 @@ export default class VsSwitch extends VsComponent {
       class: ['vs-switch__input'],
     })
 
-    return h('div', {
+    const inputContent = h('div', {
       staticClass: 'vs-switch',
       attrs: {
         type: 'checkbox',
@@ -150,5 +176,16 @@ export default class VsSwitch extends VsComponent {
       // !this.active && textOff,
       background
     ])
+
+    return h('div', {
+      style: {
+        ['margin-top']:  this.label ? '30px' : ''
+      }
+    }, [
+      this.label && label,
+      inputContent
+    ])
+
+
   }
 }

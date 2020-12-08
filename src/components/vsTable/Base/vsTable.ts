@@ -17,8 +17,12 @@ export default class VsTable extends VsComponent {
     const tds = (this.$refs as any).thead.querySelectorAll('th')
     this.colspan = tds.length
     if (this.adaptive) {
-      const headerH = (this.$refs as any).theader.querySelector('div').offsetHeight +20
-      const theadH = (this.$refs as any).thead.querySelector('tr').offsetHeight/2
+      let headerH = 0
+      let theadH = 0
+      if((this.$refs as any).theader) headerH = (this.$refs as any).theader.querySelector('div').offsetHeight +20
+      if((this.$refs as any).thead) theadH = (this.$refs as any).thead.querySelector('tr').offsetHeight
+      console.log(headerH);
+      console.log(theadH);
       this.hsize = headerH + theadH
     }
   }
@@ -103,6 +107,9 @@ export default class VsTable extends VsComponent {
 
     const table = h('div', {
       staticClass: 'vs-table',
+      style: {
+        ['max-height']: this.adaptive ? '100%' : 'calc(100% - 50px)'
+      },
       class: {
         isSelectedValue: this.value,
         striped: this.striped,

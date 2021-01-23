@@ -71,8 +71,15 @@ export default class VsTooltip extends VsComponent {
   }
 
   removeTooltip() {
-    this.activeTooltip = false
-    this.$emit('input', false)
+    if (this.delay) {
+      setTimeout(() => {
+        this.activeTooltip = false
+        this.$emit('input', false)
+      }, Number(this.delay))
+    } else {
+      this.activeTooltip = false
+      this.$emit('input', false)
+    }
   }
 
   handleResize() {
